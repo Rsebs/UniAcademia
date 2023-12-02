@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('document', 10);
+            $table->string('document', 10)->unique();
             $table->string('names', 90);
             $table->string('phone', 10);
-            $table->string('email', 45);
-            $table->string('home_address', 90);
+            $table->string('email', 45)->unique();
+            $table->string('address', 90);
             $table->integer('semester')->unsigned();
             $table->timestamps();
         });

@@ -194,6 +194,8 @@ return [
         'credits'                  => 'créditos',
         'knowledge_area_id'        => 'área de conocimiento',
         'elective'                 => 'electivo',
+        'document'                 => 'documento',
+        'names'                    => 'nombres',
     ],
     'custom'               => [],
 ];

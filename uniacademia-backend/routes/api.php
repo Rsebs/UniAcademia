@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\Knowledge_areaController;
+use App\Http\Controllers\ProfessorController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('courses', CourseController::class);
 Route::apiResource('knowledge_areas', Knowledge_areaController::class);
+Route::apiResource('students', StudentController::class);
+Route::apiResource('professors', ProfessorController::class);

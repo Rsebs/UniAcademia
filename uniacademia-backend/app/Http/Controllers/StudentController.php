@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Knowledge_areaRequest;
-use App\Models\Knowledge_area;
+use App\Http\Requests\StudentRequest;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class Knowledge_areaController extends Controller
+class StudentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class Knowledge_areaController extends Controller
     public function index()
     {
         try {
-            return response()->json(Knowledge_area::all());
+            return response()->json(Student::all());
         } catch (\Exception $e) {
             return response()->json([
                 "msg" => "Algo salió mal.",
@@ -29,16 +29,16 @@ class Knowledge_areaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\Knowledge_areaRequest  $request
+     * @param  \App\Http\Requests\StudentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Knowledge_areaRequest $request)
+    public function store(StudentRequest $request)
     {
         try {
-            $knowledge_area = Knowledge_area::create($request->input());
+            $student = Student::create($request->input());
             
             return response()->json([
-                "data" => $knowledge_area,
+                "data" => $student,
                 "msg" => "Registro guardado.",
             ]);
         } catch (\Exception $e) {
@@ -58,10 +58,10 @@ class Knowledge_areaController extends Controller
     public function show($id)
     {
         try {
-            $knowledge_area = Knowledge_area::find($id);
-            if ($knowledge_area) {
+            $student = Student::find($id);
+            if ($student) {
                 return response()->json([
-                    "data" => $knowledge_area,
+                    "data" => $student,
                     "msg" => "Registro encontrado.",
                 ]);
             }
@@ -86,11 +86,16 @@ class Knowledge_areaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $knowledge_area = Knowledge_area::find($id);
+        $student = Student::find($id);
 
-        if ($knowledge_area) {
+        if ($student) {
             $validator = Validator::make($request->all(), [
-                "name" => "required|string|unique:knowledge_areas,name,$knowledge_area->id",
+                "document" => "required|string|max:10|unique:students,document,$student->id",
+                "names" => "required|string",
+                "phone" => "required|string|max:10",
+                "email" => "required|string|unique:students,email,$student->id",
+                "address" => "required|string",
+                "semester" => "required|integer|min:1|max:9",
             ]);
     
             if ($validator->fails()) {
@@ -101,10 +106,10 @@ class Knowledge_areaController extends Controller
             }
 
             try {
-                $knowledge_area->update($request->input());
+                $student->update($request->input());
 
                 return response()->json([
-                    "data" => $knowledge_area,
+                    "data" => $student,
                     "msg" => "Registro actualizado.",
                 ]);
             } catch (\Exception $e) {
@@ -128,13 +133,13 @@ class Knowledge_areaController extends Controller
      */
     public function destroy($id)
     {
-        $knowledge_area = Knowledge_area::find($id);
-        if ($knowledge_area) {
+        $student = Student::find($id);
+        if ($student) {
             try {
-                $knowledge_area->delete();
+                $student->delete();
 
                 return response()->json([
-                    "data" => $knowledge_area,
+                    "data" => $student,
                     "msg" => "Registro eliminado.",
                 ]);
             } catch (\Exception $e) {
