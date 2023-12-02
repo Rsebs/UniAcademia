@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CourseRequest;
-use App\Models\Course;
+use App\Http\Requests\Knowledge_areaRequest;
+use App\Models\Knowledge_area;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CourseController extends Controller
+class Knowledge_areaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class CourseController extends Controller
     public function index()
     {
         try {
-            return response()->json(Course::all());
+            return response()->json(Knowledge_area::all());
         } catch (\Exception $e) {
             return response()->json([
                 "msg" => "Algo salió mal.",
@@ -29,22 +29,22 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CourseRequest $request
+     * @param  \App\Http\Requests\Knowledge_areaRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CourseRequest $request)
+    public function store(Knowledge_areaRequest $request)
     {
         try {
-            $course = Course::create($request->input());
-
+            $knowledge_area = Knowledge_area::create($request->input());
+            
             return response()->json([
-                "data" => $course,
+                "data" => $knowledge_area,
                 "msg" => "Registro guardado.",
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 "msg" => "Algo salió mal.",
-                'error' => $e->getMessage(),
+                "error" => $e->getMessage(),
             ], 500);
         }
     }
@@ -58,10 +58,10 @@ class CourseController extends Controller
     public function show($id)
     {
         try {
-            $course = Course::find($id);
-            if ($course) {
+            $knowledge_area = Knowledge_area::find($id);
+            if ($knowledge_area) {
                 return response()->json([
-                    "data" => $course,
+                    "data" => $knowledge_area,
                     "msg" => "Registro encontrado.",
                 ]);
             }
@@ -86,29 +86,26 @@ class CourseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $course = Course::find($id);
 
-        if ($course) {
+        $knowledge_area = Knowledge_area::find($id);
+
+        if ($knowledge_area) {
             $validator = Validator::make($request->all(), [
-                "name" => "required|string|unique:courses,name,$course->id",
-                "description" => "required|string",
-                "credits" => "required|integer|min:1|max:9",
-                "knowledge_area_id" => "required|integer|min:1",
-                "elective" => "required|bool",
+                "name" => "required|string|unique:knowledge_areas,name,$knowledge_area->id",
             ]);
-
+    
             if ($validator->fails()) {
                 return response()->json([
-                    "msg" => "Error en la validación.",
-                    "errors" => $validator->errors(),
+                    "msg" => "La validación falló",
+                    "errors"  => $validator->errors(),
                 ], 422);
             }
 
             try {
-                $course->update($request->input());
+                $knowledge_area->update($request->input());
 
                 return response()->json([
-                    "data" => $course,
+                    "data" => $knowledge_area,
                     "msg" => "Registro actualizado.",
                 ]);
             } catch (\Exception $e) {
@@ -132,13 +129,13 @@ class CourseController extends Controller
      */
     public function destroy($id)
     {
-        $course = Course::find($id);
-        if ($course) {
+        $knowledge_area = Knowledge_area::find($id);
+        if ($knowledge_area) {
             try {
-                $course->delete();
+                $knowledge_area->delete();
 
                 return response()->json([
-                    "data" => $course,
+                    "data" => $knowledge_area,
                     "msg" => "Registro eliminado.",
                 ]);
             } catch (\Exception $e) {

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('knowledge_areas', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 45);
+            $table->string('name', 45)->unique();
             $table->timestamps();
         });
     }
